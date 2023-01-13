@@ -1,0 +1,18 @@
+# Dummy project
+[tool.poetry]
+name = "user-auth-sgx-dummy"
+version = "0.1.0"
+description = ""
+authors = ["Nautilus"]
+license = "AGPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+maturin = {extras = ["patchelf"], version = "^0.14.10"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
