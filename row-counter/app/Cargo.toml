@@ -1,0 +1,20 @@
+[package]
+name = "app"
+version = "0.0.0"
+build = "build.rs"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+
+[dependencies.sgx_types]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
+
+[dependencies.sgx_urts]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
+
+[dependencies.clap]
+version = "4"
+features = ["derive"]

@@ -1,4 +1,5 @@
 **/build
+**/bin
 **/enclave/target
 **/app/target
 **/app/.python-version
