@@ -1,9 +1,12 @@
+use std::str::FromStr;
+
+use dotenvy_macro::dotenv;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
 
-static ENCLAVE_FILE: &str = "enclave.signed.so";
+static ENCLAVE_FILE: &str = dotenv!("ENCLAVE_SHARED_OBJECT");
 
 extern "C" {
     fn row_counter(
@@ -20,7 +23,7 @@ fn init_enclave() -> SgxResult<SgxEnclave> {
     let mut launch_token_updated: i32 = 0;
     // call sgx_create_enclave to initialize an enclave instance
     // Debug Support: set 2nd parameter to 1
-    let debug = 1;
+    let debug = i32::from_str(dotenv!("SGX_DEBUG_MODE")).unwrap_or(1);
     let mut misc_attr = sgx_misc_attribute_t {
         secs_attr: sgx_attributes_t { flags: 0, xfrm: 0 },
         misc_select: 0,
@@ -61,10 +64,9 @@ pub fn run(content: &str) -> PyResult<u64> {
             &mut count,
         )
     };
-    if result == sgx_status_t::SGX_SUCCESS {
-        println!("[+] count = {count}");
-    } else {
-        println!("[-] ECALL Enclave Failed {result}!");
+    if result != sgx_status_t::SGX_SUCCESS {
+        let message = format!("enclave ECALL failed: {result}!");
+        return Err(PyValueError::new_err(message));
     }
     enclave.destroy();
     Ok(count)
