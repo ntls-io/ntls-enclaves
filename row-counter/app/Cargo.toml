@@ -2,10 +2,23 @@
 name = "app"
 version = "0.0.0"
 build = "build.rs"
+license = "AGPL-3.0-only"
 edition = "2021"
+
+[lib]
+name = "row_counter_module"
+crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1"
+
+[dependencies.clap]
+version = "4"
+features = ["derive"]
+
+[dependencies.pyo3]
+version = "0.17"
+features = ["extension-module"]
 
 [dependencies.sgx_types]
 git = "https://github.com/apache/teaclave-sgx-sdk"
@@ -14,7 +27,3 @@ tag = "v1.1.6"
 [dependencies.sgx_urts]
 git = "https://github.com/apache/teaclave-sgx-sdk"
 tag = "v1.1.6"
-
-[dependencies.clap]
-version = "4"
-features = ["derive"]
