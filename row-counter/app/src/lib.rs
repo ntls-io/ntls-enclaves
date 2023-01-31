@@ -52,15 +52,14 @@ pub fn run(content: &str) -> PyResult<u64> {
             return Err(PyValueError::new_err(message));
         }
     };
-    let input_string = std::fs::read_to_string(content)?;
     let mut retval = sgx_status_t::SGX_SUCCESS;
     let mut count = 0;
     let result = unsafe {
         row_counter(
             enclave.geteid(),
             &mut retval,
-            input_string.as_ptr(),
-            input_string.len(),
+            content.as_ptr(),
+            content.len(),
             &mut count,
         )
     };
