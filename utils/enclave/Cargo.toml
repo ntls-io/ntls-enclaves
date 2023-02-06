@@ -1,0 +1,25 @@
+[package]
+name = "trusted"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+name = "trusted" # Library name. If you change this, please reflect those changes in the Makefile on the variable ENCLAVE_CARGO_LIB
+crate-type = ["staticlib"]
+
+[dependencies.blake3]
+version = "1"
+default-features = false
+
+[dependencies.sgx_tstd]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
+
+[dependencies.sgx_types]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
+
+[dependencies.serde_json]
+version = "1"
+default-features = false
+features = ["alloc"]

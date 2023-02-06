@@ -1,0 +1,25 @@
+[package]
+name = "app"
+version = "0.0.0"
+build = "build.rs"
+license = "AGPL-3.0-only"
+edition = "2021"
+
+[lib]
+name = "utils"
+crate-type = ["cdylib"]
+
+[dependencies]
+dotenvy_macro = "0.15"
+
+[dependencies.pyo3]
+version = "0.17"
+features = ["extension-module"]
+
+[dependencies.sgx_types]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
+
+[dependencies.sgx_urts]
+git = "https://github.com/apache/teaclave-sgx-sdk"
+tag = "v1.1.6"
