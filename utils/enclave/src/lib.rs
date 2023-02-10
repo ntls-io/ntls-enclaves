@@ -1,4 +1,5 @@
 #![cfg_attr(not(target_env = "sgx"), no_std)]
+#![deny(unsafe_op_in_unsafe_fn)]
 
 use std::vec::Vec;
 use std::{eprintln, ptr, slice};
