@@ -1,2 +1,6 @@
 enclave/Enclave_private.pem
 enclave/Enclave_public.pem
+lib/libEnclave_u.a
+lib/libenclave.a
+obj/Enclave_t.o
+obj/Enclave_u.o
