@@ -7,7 +7,7 @@ use sgx_tstd as std;
 use sgx_types::*;
 
 #[no_mangle]
-pub extern "C" fn row_counter(
+pub unsafe extern "C" fn row_counter(
     some_string: *const u8,
     some_len: usize,
     count: &mut usize,
@@ -25,7 +25,7 @@ pub extern "C" fn row_counter(
 }
 
 #[no_mangle]
-pub extern "C" fn dataset_hashing(
+pub unsafe extern "C" fn dataset_hashing(
     some_string: *const u8,
     some_len: usize,
     hash: &mut u8,
@@ -37,7 +37,7 @@ pub extern "C" fn dataset_hashing(
 }
 
 #[no_mangle]
-pub extern "C" fn dataset_append(
+pub unsafe extern "C" fn dataset_append(
     original_data: *const u8,
     original_data_len: usize,
     new_data: *const u8,

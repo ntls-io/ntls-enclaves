@@ -121,7 +121,7 @@ pub fn dataset_hashing_call(content: &str) -> PyResult<String> {
         return Err(PyValueError::new_err(message));
     }
     enclave.destroy();
-    let hash = String::from_utf8_lossy(&hash);
+    let hash = String::from_utf8_lossy(hash);
     Ok(hash.into())
 }
 
