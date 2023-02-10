@@ -23,7 +23,7 @@ extern "C" {
 
 sgx_status_t row_counter(const uint8_t* some_string, size_t len, uint64_t* count);
 sgx_status_t dataset_hashing(const uint8_t* some_string, size_t len, uint8_t* hash);
-sgx_status_t dataset_append(const uint8_t* original_data, size_t original_data_len, const uint8_t* new_data, size_t new_data_len, uint8_t* complete_data);
+sgx_status_t dataset_append(const uint8_t* original_data, size_t original_data_len, const uint8_t* new_data, size_t new_data_len, uint8_t* complete_data, size_t complete_data_len);
 void t_global_init_ecall(uint64_t id, const uint8_t* path, size_t len);
 void t_global_exit_ecall(void);
 

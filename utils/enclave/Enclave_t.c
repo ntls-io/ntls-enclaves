@@ -48,6 +48,7 @@ typedef struct ms_dataset_append_t {
 	const uint8_t* ms_new_data;
 	size_t ms_new_data_len;
 	uint8_t* ms_complete_data;
+	size_t ms_complete_data_len;
 } ms_dataset_append_t;
 
 typedef struct ms_t_global_init_ecall_t {
@@ -723,7 +724,8 @@ static sgx_status_t SGX_CDECL sgx_dataset_append(void* pms)
 	size_t _len_new_data = _tmp_new_data_len;
 	uint8_t* _in_new_data = NULL;
 	uint8_t* _tmp_complete_data = __in_ms.ms_complete_data;
-	size_t _len_complete_data = sizeof(uint8_t);
+	size_t _tmp_complete_data_len = __in_ms.ms_complete_data_len;
+	size_t _len_complete_data = _tmp_complete_data_len;
 	uint8_t* _in_complete_data = NULL;
 	sgx_status_t _in_retval;
 
@@ -785,7 +787,7 @@ static sgx_status_t SGX_CDECL sgx_dataset_append(void* pms)
 
 		memset((void*)_in_complete_data, 0, _len_complete_data);
 	}
-	_in_retval = dataset_append((const uint8_t*)_in_original_data, _tmp_original_data_len, (const uint8_t*)_in_new_data, _tmp_new_data_len, _in_complete_data);
+	_in_retval = dataset_append((const uint8_t*)_in_original_data, _tmp_original_data_len, (const uint8_t*)_in_new_data, _tmp_new_data_len, _in_complete_data, _tmp_complete_data_len);
 	if (memcpy_verw_s(&ms->ms_retval, sizeof(ms->ms_retval), &_in_retval, sizeof(_in_retval))) {
 		status = SGX_ERROR_UNEXPECTED;
 		goto err;
