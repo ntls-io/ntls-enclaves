@@ -16,9 +16,7 @@ extern "C" {
         len: usize,
         count: *mut uint64_t,
     ) -> sgx_status_t;
-}
 
-extern "C" {
     fn dataset_hashing(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
@@ -26,9 +24,7 @@ extern "C" {
         len: usize,
         hash: *mut u8,
     ) -> sgx_status_t;
-}
 
-extern "C" {
     fn dataset_append(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
