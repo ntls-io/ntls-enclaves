@@ -289,6 +289,7 @@ int SGX_UBRIDGE(SGX_NOCONVENTION, u_fstatat64_ocall, (int* error, int dirfd, con
 
 sgx_status_t row_counter(sgx_enclave_id_t eid, sgx_status_t* retval, const uint8_t* some_string, size_t len, uint64_t* count);
 sgx_status_t dataset_hashing(sgx_enclave_id_t eid, sgx_status_t* retval, const uint8_t* some_string, size_t len, uint8_t* hash);
+sgx_status_t dataset_append(sgx_enclave_id_t eid, sgx_status_t* retval, const uint8_t* original_data, size_t original_data_len, const uint8_t* new_data, size_t new_data_len, uint8_t* complete_data);
 sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_t* path, size_t len);
 sgx_status_t t_global_exit_ecall(sgx_enclave_id_t eid);
 

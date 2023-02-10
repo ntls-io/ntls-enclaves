@@ -15,6 +15,15 @@ typedef struct ms_dataset_hashing_t {
 	uint8_t* ms_hash;
 } ms_dataset_hashing_t;
 
+typedef struct ms_dataset_append_t {
+	sgx_status_t ms_retval;
+	const uint8_t* ms_original_data;
+	size_t ms_original_data_len;
+	const uint8_t* ms_new_data;
+	size_t ms_new_data_len;
+	uint8_t* ms_complete_data;
+} ms_dataset_append_t;
+
 typedef struct ms_t_global_init_ecall_t {
 	uint64_t ms_id;
 	const uint8_t* ms_path;
@@ -1134,6 +1143,20 @@ sgx_status_t dataset_hashing(sgx_enclave_id_t eid, sgx_status_t* retval, const u
 	return status;
 }
 
+sgx_status_t dataset_append(sgx_enclave_id_t eid, sgx_status_t* retval, const uint8_t* original_data, size_t original_data_len, const uint8_t* new_data, size_t new_data_len, uint8_t* complete_data)
+{
+	sgx_status_t status;
+	ms_dataset_append_t ms;
+	ms.ms_original_data = original_data;
+	ms.ms_original_data_len = original_data_len;
+	ms.ms_new_data = new_data;
+	ms.ms_new_data_len = new_data_len;
+	ms.ms_complete_data = complete_data;
+	status = sgx_ecall(eid, 2, &ocall_table_Enclave, &ms);
+	if (status == SGX_SUCCESS && retval) *retval = ms.ms_retval;
+	return status;
+}
+
 sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_t* path, size_t len)
 {
 	sgx_status_t status;
@@ -1141,14 +1164,14 @@ sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_
 	ms.ms_id = id;
 	ms.ms_path = path;
 	ms.ms_len = len;
-	status = sgx_ecall(eid, 2, &ocall_table_Enclave, &ms);
+	status = sgx_ecall(eid, 3, &ocall_table_Enclave, &ms);
 	return status;
 }
 
 sgx_status_t t_global_exit_ecall(sgx_enclave_id_t eid)
 {
 	sgx_status_t status;
-	status = sgx_ecall(eid, 3, &ocall_table_Enclave, NULL);
+	status = sgx_ecall(eid, 4, &ocall_table_Enclave, NULL);
 	return status;
 }
 
