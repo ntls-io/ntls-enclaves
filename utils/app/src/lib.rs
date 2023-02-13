@@ -33,7 +33,6 @@ extern "C" {
         new_data: *const u8,
         new_data_len: usize,
         complete_data: *mut u8,
-        complete_data_len: *mut usize,
     ) -> sgx_status_t;
 }
 
@@ -133,7 +132,6 @@ pub fn dataset_append_call(original_data: &str, new_data: &str) -> PyResult<Stri
     };
     let mut retval = sgx_status_t::SGX_SUCCESS;
     let mut complete_data: Vec<u8> = Vec::new();
-    let mut complete_data_len = 0;
     let result = unsafe {
         dataset_append(
             enclave.geteid(),
@@ -143,7 +141,6 @@ pub fn dataset_append_call(original_data: &str, new_data: &str) -> PyResult<Stri
             new_data.as_ptr(),
             new_data.len(),
             complete_data.as_mut_ptr(),
-            &mut complete_data_len,
         )
     };
     if result != sgx_status_t::SGX_SUCCESS {
