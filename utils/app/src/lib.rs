@@ -9,7 +9,7 @@ use sgx_urts::SgxEnclave;
 static ENCLAVE_FILE: &str = dotenv!("ENCLAVE_SHARED_OBJECT");
 
 extern "C" {
-    fn row_counter(
+    fn row_counter_ecall(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
         some_string: *const u8,
@@ -17,7 +17,7 @@ extern "C" {
         count: *mut uint64_t,
     ) -> sgx_status_t;
 
-    fn dataset_hashing(
+    fn dataset_hashing_ecall(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
         some_string: *const u8,
@@ -25,7 +25,7 @@ extern "C" {
         hash: *mut u8,
     ) -> sgx_status_t;
 
-    fn dataset_append(
+    fn dataset_append_ecall(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
         original_data: *const u8,
@@ -57,14 +57,14 @@ fn init_enclave() -> SgxResult<SgxEnclave> {
 
 #[pymodule]
 fn utils(_py: Python, module: &PyModule) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(row_counter_call, module)?)?;
-    module.add_function(wrap_pyfunction!(dataset_hashing_call, module)?)?;
-    module.add_function(wrap_pyfunction!(dataset_append_call, module)?)?;
+    module.add_function(wrap_pyfunction!(row_counter, module)?)?;
+    module.add_function(wrap_pyfunction!(dataset_hashing, module)?)?;
+    module.add_function(wrap_pyfunction!(dataset_append, module)?)?;
     Ok(())
 }
 
 #[pyfunction]
-pub fn row_counter_call(content: &str) -> PyResult<u64> {
+pub fn row_counter(content: &str) -> PyResult<u64> {
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
@@ -75,7 +75,7 @@ pub fn row_counter_call(content: &str) -> PyResult<u64> {
     let mut retval = sgx_status_t::SGX_SUCCESS;
     let mut count = 0;
     let result = unsafe {
-        row_counter(
+        row_counter_ecall(
             enclave.geteid(),
             &mut retval,
             content.as_ptr(),
@@ -92,7 +92,7 @@ pub fn row_counter_call(content: &str) -> PyResult<u64> {
 }
 
 #[pyfunction]
-pub fn dataset_hashing_call(content: &str) -> PyResult<String> {
+pub fn dataset_hashing(content: &str) -> PyResult<String> {
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
@@ -104,7 +104,7 @@ pub fn dataset_hashing_call(content: &str) -> PyResult<String> {
     let mut result_vec: Vec<u8> = vec![0; 64];
     let hash = &mut result_vec[..];
     let result = unsafe {
-        dataset_hashing(
+        dataset_hashing_ecall(
             enclave.geteid(),
             &mut retval,
             content.as_ptr(),
@@ -122,7 +122,7 @@ pub fn dataset_hashing_call(content: &str) -> PyResult<String> {
 }
 
 #[pyfunction]
-pub fn dataset_append_call(original_data: &str, new_data: &str) -> PyResult<String> {
+pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<String> {
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
@@ -133,7 +133,7 @@ pub fn dataset_append_call(original_data: &str, new_data: &str) -> PyResult<Stri
     let mut retval = sgx_status_t::SGX_SUCCESS;
     let mut complete_data: Vec<u8> = Vec::new();
     let result = unsafe {
-        dataset_append(
+        dataset_append_ecall(
             enclave.geteid(),
             &mut retval,
             original_data.as_ptr(),
