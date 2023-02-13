@@ -1,5 +1,9 @@
+app/Enclave_u.c
+app/Enclave_u.h
 enclave/Enclave_private.pem
 enclave/Enclave_public.pem
+enclave/Enclave_t.c
+enclave/Enclave_t.h
 lib/libEnclave_u.a
 lib/libenclave.a
 obj/Enclave_t.o
