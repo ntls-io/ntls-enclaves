@@ -20,7 +20,8 @@ enclave {
             size_t original_data_len,
             [in, size=new_data_len] const uint8_t* new_data,
             size_t new_data_len,
-            [user_check] uint8_t* complete_data
+            [user_check] uint8_t* complete_data,
+            [out] size_t* complete_data_len
         );
     };
 };

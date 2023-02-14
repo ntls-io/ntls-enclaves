@@ -44,6 +44,7 @@ pub unsafe extern "C" fn dataset_append_ecall(
     new_data: *const u8,
     new_data_len: usize,
     complete_data: &mut u8,
+    complete_data_len: &mut usize,
 ) -> sgx_status_t {
     let original_data = unsafe { slice::from_raw_parts(original_data, original_data_len) };
     let new_data = unsafe { slice::from_raw_parts(new_data, new_data_len) };
@@ -76,7 +77,8 @@ pub unsafe extern "C" fn dataset_append_ecall(
         }
     };
 
-    unsafe { ptr::copy_nonoverlapping(data.as_ptr(), complete_data, data.len()) };
+    *complete_data_len = data.len();
+    unsafe { ptr::copy_nonoverlapping(data.as_ptr(), complete_data, *complete_data_len) };
 
     sgx_status_t::SGX_SUCCESS
 }

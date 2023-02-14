@@ -1,3 +1,4 @@
+use std::slice;
 use std::str::FromStr;
 
 use dotenvy_macro::dotenv;
@@ -7,6 +8,7 @@ use sgx_types::*;
 use sgx_urts::SgxEnclave;
 
 static ENCLAVE_FILE: &str = dotenv!("ENCLAVE_SHARED_OBJECT");
+static DATASET_SIZE_LIMIT_IN_BYTES: usize = 1024 * 1024;
 
 extern "C" {
     fn row_counter_ecall(
@@ -33,6 +35,7 @@ extern "C" {
         new_data: *const u8,
         new_data_len: usize,
         complete_data: *mut u8,
+        complete_data_len: *mut usize,
     ) -> sgx_status_t;
 }
 
@@ -131,7 +134,8 @@ pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<String> {
         }
     };
     let mut retval = sgx_status_t::SGX_SUCCESS;
-    let mut complete_data: Vec<u8> = Vec::new();
+    let mut complete_data: Vec<u8> = Vec::with_capacity(DATASET_SIZE_LIMIT_IN_BYTES);
+    let mut complete_data_len = 0;
     let result = unsafe {
         dataset_append_ecall(
             enclave.geteid(),
@@ -141,12 +145,15 @@ pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<String> {
             new_data.as_ptr(),
             new_data.len(),
             complete_data.as_mut_ptr(),
+            &mut complete_data_len,
         )
     };
     if result != sgx_status_t::SGX_SUCCESS {
         let message = format!("enclave ECALL failed: {result}!");
         return Err(PyValueError::new_err(message));
     }
+    let data = unsafe { slice::from_raw_parts(complete_data.as_ptr(), complete_data_len.into()) };
+    let data = String::from_utf8_lossy(&data);
     enclave.destroy();
-    Ok(String::from_utf8_lossy(&complete_data).into())
+    Ok(data.into())
 }
