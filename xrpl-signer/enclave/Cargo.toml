@@ -1,0 +1,25 @@
+[package]
+name = "user-auth"
+version = "1.0.0"
+authors = ["Nautilus"]
+edition = "2021"
+license = "AGPL-3.0"
+
+[lib]
+name = "UserAuth" # Library name. If you change this, please reflect those changes in the Makefile on the variable ENCLAVE_CARGO_LIB
+crate-type = ["staticlib"]
+
+[features]
+default = []
+
+[dependencies]
+sgx_types = { git="https://github.com/apache/incubator-teaclave-sgx-sdk", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"], rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+sgx_rand = { git = "https://github.com/apache/teaclave-sgx-sdk.git", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+sgx-tkeys = { git="https://github.com/jdvlio/rooibos-sgx.git", rev="521728b24f08228e2c936cf8c018093efb0f8a14" }
+
+argon2 = { version = "0.4", default-features = false, features = ["alloc", "password-hash"] }
+password-hash = { version = "0.4", default-features = false, features = ["alloc"] }
+once_cell = { version = "1.17.0", default-features = false, features = ["alloc"] }
+
+[patch.'https://github.com/apache/teaclave-sgx-sdk.git']

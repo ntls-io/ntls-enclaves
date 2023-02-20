@@ -1,0 +1,7 @@
+**/build
+**/common/target
+**/enclave/target
+**/app/target
+**/app/.python-version
+*.env
+*.pem
