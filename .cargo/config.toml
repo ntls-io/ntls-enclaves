@@ -1,0 +1,11 @@
+# remove once teaclave has moved to Rust v1.68,
+# which stabilizes "sparse" protocol
+registries.crates-io.protocol = "git"
+
+# remove once teaclave has moved to Rust v1.69-nightly,
+# which introduced the "-Z terminal-urls" flag
+build.rustflags = ""
+
+# does not play well with sccache,
+# perhaps due to using a much different compiler version
+build.rustc-wrapper = ""
