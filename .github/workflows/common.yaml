@@ -1,0 +1,51 @@
+# recipe from:
+# - https://github.com/actions-rs/meta/blob/master/recipes/quickstart.md
+# - https://github.com/tshepang/mrh/blob/main/.github/workflows/ci.yml
+on: [push, pull_request]
+
+name: common-rust-crates
+
+# set default parameters
+defaults:
+  run:
+    working-directory: common
+
+jobs:
+  test:
+    name: Test Suite (common)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2022-10-22
+      - name: Check
+        run: cargo check
+      - name: Test
+        run: cargo test
+
+  fmt:
+    name: Rustfmt (common)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2022-10-22
+      - name: Install Rustfmt
+        run: rustup component add rustfmt
+      - name: Check formatting
+        run: cargo fmt --check
+
+  clippy:
+    name: Clippy (common)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly-2022-10-22
+      - name: Install Clippy
+        run: rustup component add clippy
+      - name: Consult clippy
+        run: cargo clippy -- --deny warnings
