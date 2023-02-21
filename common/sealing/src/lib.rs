@@ -24,6 +24,10 @@ use zeroize::{Zeroize, ZeroizeOnDrop};
 pub struct Nonce([u8; 12]);
 
 impl Nonce {
+    // The following constant is fixed by the ChaCha20-Poly1305 algorithm.
+    //
+    // TODO: figure out how to use the associated [`NonceSize`] type here
+    // instead.
     pub const SIZE: usize = 12;
 
     pub fn new(nonce: [u8; Self::SIZE]) -> Self {
