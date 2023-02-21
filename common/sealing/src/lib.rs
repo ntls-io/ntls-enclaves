@@ -1,8 +1,8 @@
-//! A crate that facilitates sealing using ChaCha20-Poly1305, an algorithm for
-//! [AEAD][aead].
+//! A crate that facilitates sealing using [ChaCha20-Poly1305], an algorithm for
+//! [AEAD].
 //!
-//! [aead]: https://en.wikipedia.org/wiki/Authenticated_encryption
-//! [chacha]: https://en.wikipedia.org/wiki/ChaCha20-Poly1305
+//! [AEAD]: https://en.wikipedia.org/wiki/Authenticated_encryption
+//! [ChaCha20-Poly1305]: https://en.wikipedia.org/wiki/ChaCha20-Poly1305
 #![no_std]
 
 extern crate alloc;
@@ -76,11 +76,11 @@ type NonceSize = U12;
 type SecretKeySize = U32;
 
 /// Cryptographically seal and authenticate a message using the
-/// [ChaCha20-Poly1305][chacha20poly1305] algorithm for [AEAD][aead].
-/// Associated data is also authenticated, but not encrypted.
+/// [ChaCha20-Poly1305] algorithm for [AEAD]. Associated data is also
+/// authenticated, but not encrypted.
 ///
-/// [aead]: https://en.wikipedia.org/wiki/Authenticated_encryption
-/// [chacha]: https://en.wikipedia.org/wiki/ChaCha20-Poly1305
+/// [AEAD]: https://en.wikipedia.org/wiki/Authenticated_encryption
+/// [ChaCha20-Poly1305]: https://en.wikipedia.org/wiki/ChaCha20-Poly1305
 pub fn seal(
     msg: &[u8],
     key: SecretKey,
