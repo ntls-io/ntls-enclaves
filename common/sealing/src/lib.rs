@@ -88,12 +88,12 @@ pub fn seal(
     aad: &[u8],
 ) -> Result<Box<[u8]>, ring_compat::aead::Error> {
     let mut buffer = Vec::from(msg);
-    let aead = ChaCha20Poly1305::new(&GenericArray::<u8, SecretKeySize>::from_slice(&<[u8;
+    let aead = ChaCha20Poly1305::new(GenericArray::<u8, SecretKeySize>::from_slice(&<[u8;
         SecretKey::SIZE]>::from(
         key
     )));
     aead.encrypt_in_place(
-        &GenericArray::<u8, NonceSize>::from_slice(&<[u8; Nonce::SIZE]>::from(nonce)),
+        GenericArray::<u8, NonceSize>::from_slice(&<[u8; Nonce::SIZE]>::from(nonce)),
         aad,
         &mut buffer,
     )?;
@@ -110,11 +110,11 @@ pub fn open(
     aad: &[u8],
 ) -> Result<SecretBytes, ring_compat::aead::Error> {
     let mut buffer = Vec::from(sealed_msg);
-    let aead = ChaCha20Poly1305::new(&GenericArray::from_slice(&<[u8; SecretKey::SIZE]>::from(
+    let aead = ChaCha20Poly1305::new(GenericArray::from_slice(&<[u8; SecretKey::SIZE]>::from(
         key,
     )));
     aead.decrypt_in_place(
-        &GenericArray::from_slice(&<[u8; 12]>::from(nonce)),
+        GenericArray::from_slice(&<[u8; 12]>::from(nonce)),
         aad,
         &mut buffer,
     )?;
