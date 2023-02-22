@@ -103,7 +103,7 @@ pub fn seal(
 pub type SecretBytes = Zeroizing<Box<[u8]>>;
 /// Cryptographically unseal and authenticate a message by supplying it
 /// alongside its associated data.
-pub fn open(
+pub fn unseal(
     sealed_msg: &[u8],
     key: SecretKey,
     nonce: Nonce,
@@ -148,7 +148,7 @@ mod tests {
         let nonce = Nonce([111u8; 12]);
 
         let sealed_message = sealed_test_message_result().unwrap();
-        let result = open(&sealed_message, key, nonce, aad);
+        let result = unseal(&sealed_message, key, nonce, aad);
         assert!(result.is_ok())
     }
 
@@ -156,7 +156,7 @@ mod tests {
     fn prop_seal_unseal_roundtrips() {
         proptest! {|(msg: Box<[u8]>,  key: [u8; 32], nonce: [u8; 12], aad: Box<[u8]>)| {
             let sealed_msg = seal(msg.as_ref(), SecretKey(key), Nonce(nonce), aad.as_ref()).unwrap();
-            let opened_msg = open(sealed_msg.as_ref(), SecretKey(key), Nonce(nonce), aad.as_ref()).unwrap();
+            let opened_msg = unseal(sealed_msg.as_ref(), SecretKey(key), Nonce(nonce), aad.as_ref()).unwrap();
             assert_eq!(msg, *opened_msg)
         }}
     }
