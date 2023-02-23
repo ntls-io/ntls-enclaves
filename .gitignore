@@ -1,2 +1,14 @@
+# build artifacts
+**/app/target
+**/build
 **/common/target
 **/common-sgx/target
+**/enclave/target
+
+# environment
+**/app/.python-version
+*.env
+
+# encoded key files
+*.der
+*.pem
