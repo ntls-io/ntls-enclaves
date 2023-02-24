@@ -7,12 +7,15 @@
 
 extern crate alloc;
 
-use alloc::boxed::Box;
-use alloc::vec::Vec;
+use alloc::{boxed::Box, vec::Vec};
 
-use ring_compat::aead::{AeadInPlace, ChaCha20Poly1305, KeyInit};
-use ring_compat::generic_array::typenum::{U12, U32};
-use ring_compat::generic_array::GenericArray;
+use ring_compat::{
+    aead::{AeadInPlace, ChaCha20Poly1305, KeyInit},
+    generic_array::{
+        typenum::{U12, U32},
+        GenericArray,
+    },
+};
 pub use zeroize::Zeroizing;
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
