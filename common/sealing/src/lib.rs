@@ -9,6 +9,7 @@ extern crate alloc;
 
 use alloc::boxed::Box;
 use alloc::vec::Vec;
+use core::array::TryFromSliceError;
 
 use ring_compat::aead::{AeadInPlace, ChaCha20Poly1305, KeyInit};
 use ring_compat::generic_array::typenum::{U12, U32};
@@ -45,6 +46,27 @@ impl SecretKey {
 
     pub fn new(key: [u8; Self::SIZE]) -> Self {
         SecretKey::from(key)
+    }
+}
+
+impl AsRef<[u8]> for SecretKey {
+    fn as_ref(&self) -> &[u8] {
+        let Self(key) = self;
+        key.as_ref()
+    }
+}
+
+impl AsMut<[u8]> for SecretKey {
+    fn as_mut(&mut self) -> &mut [u8] {
+        let Self(key) = self;
+        key.as_mut()
+    }
+}
+
+impl TryFrom<&[u8]> for SecretKey {
+    type Error = TryFromSliceError;
+    fn try_from(key: &[u8]) -> Result<Self, Self::Error> {
+        Ok(Self(<[u8; 32]>::try_from(key)?))
     }
 }
 
