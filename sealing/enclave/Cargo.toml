@@ -1,0 +1,27 @@
+[package]
+name = "sealing-enclave"
+version = "1.0.0"
+authors = ["Nautilus"]
+edition = "2021"
+license = "AGPL-3.0"
+
+[lib]
+name = "sealing_enclave" # Library name. If you change this, please reflect those changes in the Makefile on the variable ENCLAVE_CARGO_LIB
+crate-type = ["staticlib"]
+
+[features]
+default = []
+
+[dependencies]
+# Rust SGX SDK
+sgx_types = { git="https://github.com/apache/incubator-teaclave-sgx-sdk", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"], rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+sgx_rand = { git = "https://github.com/apache/teaclave-sgx-sdk.git", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
+
+# local repository crates
+sealing = { path = "../../common/sealing" }
+
+# Other crates
+sgx-keys = { git="https://github.com/jdvlio/rooibos-sgx.git", rev="a26497ea6319f55d2c17d195360e6b3424b7e217" }
+ 
+[patch.'https://github.com/apache/teaclave-sgx-sdk.git']
