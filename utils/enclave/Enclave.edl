@@ -24,5 +24,13 @@ enclave {
             [out] size_t* complete_data_len,
             [out, size=64] uint8_t* complete_data_hash
         );
+
+        public sgx_status_t transaction_sign_ecall(
+            [in, size=transaction_len] const uint8_t* transaction,
+            size_t transaction_len,
+            [in, size=32] const uint8_t* account_seed,
+            [user_check] uint8_t* signed_transaction,
+            [out] size_t* signed_transaction_len
+        );
     };
 };

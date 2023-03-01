@@ -6,6 +6,7 @@ use std::{eprintln, ptr, slice, vec::Vec};
 use sgx_tstd as std;
 use sgx_types::*;
 
+static ALGORAND_ACCOUNT_SEED_IN_BYTES: usize = 64;
 // TODO: place this in a shared crate
 static HASH_SIZE_IN_BYTES: usize = 64;
 
@@ -85,6 +86,30 @@ pub unsafe extern "C" fn dataset_append_ecall(
 
     let hash_bytes = blake3::hash(data.as_bytes()).to_hex();
     unsafe { ptr::copy(hash_bytes.as_ptr(), complete_data_hash, HASH_SIZE_IN_BYTES) };
+
+    sgx_status_t::SGX_SUCCESS
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn transaction_sign_ecall(
+    transaction: *const u8,
+    transaction_len: usize,
+    account_seed: *const u8,
+    signed_transaction: &mut u8,
+    signed_transaction_len: &mut usize,
+) -> sgx_status_t {
+    let transaction = unsafe { slice::from_raw_parts(transaction, transaction_len) };
+    let account_seed =
+        unsafe { slice::from_raw_parts(account_seed, ALGORAND_ACCOUNT_SEED_IN_BYTES) };
+
+    *signed_transaction_len = transaction.len();
+    unsafe {
+        ptr::copy_nonoverlapping(
+            transaction.as_ptr(),
+            signed_transaction,
+            *signed_transaction_len,
+        )
+    };
 
     sgx_status_t::SGX_SUCCESS
 }
