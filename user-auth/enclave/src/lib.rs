@@ -22,12 +22,7 @@ pub const SALT_LENGTH: usize = 22;
 pub const HASH_STRING_LENGTH: usize = 97;
 
 /// Argon2 memory cost in MiB.
-pub const M_COST_MIB: u32 = 19;
-
-// Convert the Argon2 memory cost from MiB to KiB
-const fn m_cost_calc(mebibytes: u32) -> {
-    mebibytes * 1024
-}
+pub const M_COST_MIB: u32 = 19 * 1024;
 
 fn new_pepper(user_id: &[u8]) -> SgxSecret {
     SgxSecretBuilder::new()
@@ -44,7 +39,7 @@ fn new_hash_context<'a>(pepper: &'a [u8]) -> Result<Argon2<'a>, argon2::Error> {
         // default set by the Argon2 library and the value recommended at:
         //
         // https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
-        Params::new(m_cost_calc(M_COST_MIB), 3, 1, None).unwrap(),
+        Params::new(M_COST_MIB, 3, 1, None).unwrap(),
     )
 }
 
