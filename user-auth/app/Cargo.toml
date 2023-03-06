@@ -1,0 +1,28 @@
+[package]
+name = "user-auth-sgx"
+version = "1.0.0"
+authors = ["Nautilus"]
+build = "build.rs"
+edition = "2021"
+license = "AGPL-3.0"
+
+[lib]
+# The name of the native library. This is the name which will be used in Python to import the
+# library (i.e. `import string_sum`). If you change this, you must also change the name of the
+# `#[pymodule]` in `src/lib.rs`.
+name = "user_auth_sgx"
+
+# "cdylib" is necessary to produce a shared library for Python to import from.
+crate-type = ["cdylib"]
+
+[dependencies] # You can specify the features you need for urts, such as global_exit and global_init
+user-auth-common = { path="../../common/user-auth" }
+sgx_types = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_urts = { git = "https://github.com/apache/teaclave-sgx-sdk.git"}
+pyo3 = { version = "0.18", features = ["extension-module"] }
+dotenvy_macro = "0.15"
+thiserror = "1.0"
+password-hash = { version = "0.4", features = ["std"] }
+argon2 = { version = "0.4", features = ["rand"] }
+
+[patch.'https://github.com/apache/teaclave-sgx-sdk.git']
