@@ -12,8 +12,8 @@ pub const SALT_LENGTH: usize = 22;
 // the doc comment above.
 pub const HASH_STRING_LENGTH: usize = 97;
 
-/// Argon2 memory cost in MiB.
-pub const M_COST_MIB: u32 = 19 * 1024;
+/// Argon2 memory cost in KiB.
+pub const M_COST_KIB: u32 = 19 * 1024;
 
 #[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]

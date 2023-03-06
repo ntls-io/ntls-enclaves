@@ -26,7 +26,7 @@ fn new_hash_context<'a>(pepper: &'a [u8]) -> Result<Argon2<'a>, argon2::Error> {
         // default set by the Argon2 library and the value recommended at:
         //
         // https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
-        Params::new(M_COST_MIB, 3, 1, None).unwrap(),
+        Params::new(M_COST_KIB, 3, 1, None).unwrap(),
     )
 }
 
