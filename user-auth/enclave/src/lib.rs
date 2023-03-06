@@ -17,8 +17,8 @@ fn new_pepper(user_id: &[u8]) -> SgxSecret {
         .policy(SgxKeyPolicy::MRSIGNER)
         .build()
 }
-fn new_hash_context<'a>(pepper: &'a [u8]) -> Result<Argon2<'a>, argon2::Error> {
-    Argon2::<'a>::new_with_secret(
+fn new_hash_context(pepper: &[u8]) -> Result<Argon2, argon2::Error> {
+    Argon2::new_with_secret(
         pepper.as_ref(),
         Algorithm::default(),
         Version::default(),
