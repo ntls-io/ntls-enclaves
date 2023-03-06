@@ -16,6 +16,7 @@ name = "user_auth_sgx"
 crate-type = ["cdylib"]
 
 [dependencies] # You can specify the features you need for urts, such as global_exit and global_init
+user-auth-common = { path="../../common/user-auth" }
 sgx_types = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
 sgx_urts = { git = "https://github.com/apache/teaclave-sgx-sdk.git"}
 pyo3 = { version = "0.18", features = ["extension-module"] }

@@ -6,13 +6,14 @@ edition = "2021"
 license = "AGPL-3.0"
 
 [lib]
-name = "UserAuth" # Library name. If you change this, please reflect those changes in the Makefile on the variable ENCLAVE_CARGO_LIB
+name = "user_auth" # Library name. If you change this, please reflect those changes in the Makefile on the variable ENCLAVE_CARGO_LIB
 crate-type = ["staticlib"]
 
 [features]
 default = []
 
 [dependencies]
+user-auth-common = { path="../../common/user-auth" }
 sgx_types = { git="https://github.com/apache/incubator-teaclave-sgx-sdk", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
 sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"], rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
 sgx_rand = { git = "https://github.com/apache/teaclave-sgx-sdk.git", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }

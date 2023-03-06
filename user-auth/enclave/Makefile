@@ -26,7 +26,7 @@ ENCLAVE_CONFIG = Enclave.config.xml
 SGX_ARCH = x64
 TRTS_LIB = sgx_trts
 SERVICE_LIB = sgx_tservice
-ENCLAVE_CARGO_LIB=libUserAuth.a # This is the name of the enclave static library compiled by Cargo/Xargo. You will have to change it, depending of your project.
+ENCLAVE_CARGO_LIB=libuser_auth.a # This is the name of the enclave static library compiled by Cargo/Xargo. You will have to change it, depending of your project.
 # Addprefix dependant variables, no need to change those
 OUTPUT_T = $(FILES_T:.c=.o)
 NAME = $(addprefix $(BIN), $(APP_T_SIGNED))

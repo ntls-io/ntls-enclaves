@@ -347,7 +347,12 @@ dependencies = [
  "sgx_rand",
  "sgx_tstd",
  "sgx_types 1.1.6 (git+https://github.com/apache/incubator-teaclave-sgx-sdk?rev=27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2)",
+ "user-auth-common",
 ]
+
+[[package]]
+name = "user-auth-common"
+version = "0.1.0"
 
 [[package]]
 name = "version_check"

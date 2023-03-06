@@ -6,29 +6,12 @@ use pyo3::types::PyModule;
 use pyo3::{create_exception, pyclass, pymethods, pymodule, PyResult, Python};
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
+use user_auth_common::*;
 
 static ENCLAVE_FILE: &'static str = dotenv!("ENCLAVE_SHARED_OBJECT");
 
 pub mod ecall;
 
-create_exception!(
-    user_auth_sgx,
-    InvalidPassword,
-    PyException,
-    "password does not match the supplied hash"
-);
-create_exception!(
-    user_auth_sgx,
-    EmptyUserId,
-    PyException,
-    "supplied user id is empty"
-);
-create_exception!(
-    user_auth_sgx,
-    EmptyPassword,
-    PyException,
-    "supplied user password is empty"
-);
 create_exception!(
     user_auth_sgx,
     InvalidHashString,
@@ -38,21 +21,9 @@ create_exception!(
 
 #[pymodule]
 fn user_auth_sgx(py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add("InvalidPassword", py.get_type::<InvalidPassword>())?;
-    m.add("EmtpyUserId", py.get_type::<EmptyUserId>())?;
-    m.add("EmtpyPassword", py.get_type::<EmptyPassword>())?;
     m.add("InvalidHashString", py.get_type::<InvalidHashString>())?;
     m.add_class::<UserAuthEnclave>()?;
-    m.add_class::<VerifyPasswordStatus>()?;
     Ok(())
-}
-
-#[pyclass]
-#[repr(u32)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum VerifyPasswordStatus {
-    PasswordVerified = 0,
-    InvalidPassword = 1,
 }
 
 #[pyclass]
@@ -98,20 +69,14 @@ impl UserAuthEnclave {
         user_id: &[u8],
         password: &str,
         stored_hash_string: &str,
-    ) -> PyResult<VerifyPasswordStatus> {
+    ) -> PyResult<bool> {
         let Self(enclave) = self;
         ecall::safe_verify_password(enclave.geteid(), user_id, password, stored_hash_string)
             .map(|status| match status {
-                ecall::VerifyPasswordStatus::InvalidPassword => {
-                    VerifyPasswordStatus::InvalidPassword
-                }
-                ecall::VerifyPasswordStatus::PasswordVerified => {
-                    VerifyPasswordStatus::PasswordVerified
-                }
+                VerifyPasswordStatus::InvalidPassword => false,
+                VerifyPasswordStatus::PasswordVerified => true,
             })
             .map_err(|err| match err {
-                ecall::AuthError::EmptyUserId => EmptyUserId::new_err(err.to_string()),
-                ecall::AuthError::EmptyPassword => EmptyPassword::new_err(err.to_string()),
                 ecall::AuthError::InvalidHashString => InvalidHashString::new_err(err.to_string()),
             })
     }

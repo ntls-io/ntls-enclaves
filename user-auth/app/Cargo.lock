@@ -387,6 +387,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1766d682d402817b5ac4490b3c3002d91dfa0d22812f341609f97b08757359c"
 
 [[package]]
+name = "user-auth-common"
+version = "0.1.0"
+
+[[package]]
 name = "user-auth-sgx"
 version = "1.0.0"
 dependencies = [
@@ -397,6 +401,7 @@ dependencies = [
  "sgx_types",
  "sgx_urts",
  "thiserror",
+ "user-auth-common",
 ]
 
 [[package]]

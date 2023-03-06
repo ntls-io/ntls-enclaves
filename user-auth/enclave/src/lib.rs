@@ -9,20 +9,7 @@ use password_hash::PasswordHashString;
 use sgx_keys::{SgxKeyPolicy, SgxSecret, SgxSecretBuilder};
 use sgx_tstd as std;
 use sgx_types::*;
-
-/// Length of a PHC-encoding of a 16 bit salt
-pub const SALT_LENGTH: usize = 22;
-
-/// It is assumed that the hash parameters and other configuration options (e.g.
-/// output length) are all set to their default values.  If any of these are
-/// changed in the future then this value will either need to be redetermined or
-/// dynammically calculated!
-// XXX: Certain assumptions are made here that relate to the hash context. See
-// the doc comment above.
-pub const HASH_STRING_LENGTH: usize = 97;
-
-/// Argon2 memory cost in MiB.
-pub const M_COST_MIB: u32 = 19 * 1024;
+use user_auth_common::*;
 
 fn new_pepper(user_id: &[u8]) -> SgxSecret {
     SgxSecretBuilder::new()
@@ -93,12 +80,6 @@ pub unsafe extern "C" fn hash_password(
                 },
             ),
     }
-}
-
-#[repr(u32)]
-pub enum VerifyPasswordStatus {
-    PasswordVerified = 0,
-    InvalidPassword = 1,
 }
 
 ///# Safety: guaranteed by the trusted bridge routine generated with the
