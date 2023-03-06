@@ -3,4 +3,5 @@
 [workspace]
 members = [
 	"sealing",
+	"user-auth"
 ]
