@@ -6,7 +6,7 @@ use std::slice;
 use argon2::{Algorithm, Argon2, Params, PasswordHasher, PasswordVerifier, Version};
 use once_cell::unsync::OnceCell;
 use password_hash::PasswordHashString;
-use sgx_tkeys::{SgxKeyPolicy, SgxSecret, SgxSecretBuilder};
+use sgx_keys::{SgxKeyPolicy, SgxSecret, SgxSecretBuilder};
 use sgx_tstd as std;
 use sgx_types::*;
 

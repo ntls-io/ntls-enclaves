@@ -16,7 +16,7 @@ default = []
 sgx_types = { git="https://github.com/apache/incubator-teaclave-sgx-sdk", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
 sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"], rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
 sgx_rand = { git = "https://github.com/apache/teaclave-sgx-sdk.git", rev="27bd225ae6dbcd1d0a6d4d9590acc4d73c5195c2" }
-sgx-tkeys = { git="https://github.com/jdvlio/rooibos-sgx.git", rev="521728b24f08228e2c936cf8c018093efb0f8a14" }
+sgx-keys = { git="https://github.com/jdvlio/rooibos-sgx.git", rev="a26497ea6319f55d2c17d195360e6b3424b7e217" }
 
 argon2 = { version = "0.4", default-features = false, features = ["alloc", "password-hash"] }
 password-hash = { version = "0.4", default-features = false, features = ["alloc"] }
