@@ -74,5 +74,18 @@ $ python -c 'from utils import dataset_append as run; out = run("[1, 2, 3]", "[4
 ('[1,2,3,4,5,6]', '3b27ea06e1a721ca6709a283026372e7ff388331242dac94548544b35c2db9b6')
 ````
 
+# algorand signing
+
+This uses an old Teaclave SDK, and results in the following downgrades:
+
+- Teaclave v1.1.3 (instead of v1.1.6)
+- Intel SDK v2.14 (instead of v2.18)
+- Algonaut v0.3.0 (instead of v0.4.2)
+- Rust toolchain nightly-2021-11-01 (instead of nightly-2022-10-21)
+- Ubuntu 20.04 (instead of 22.04)
+
+The reason is that there is already a port of Algonaut using these versions,
+and an attempt to upgrade to these latest dependencies took longer than planned.
+
 [Poetry]: https://python-poetry.org
 [this repo]: https://github.com/ntls-io/rust-sgx-sdk-dev-env
