@@ -70,7 +70,7 @@ $ python -c 'from utils import row_counter as run; out = run("[1, 2, 3]"); print
 3
 $ python -c 'from utils import dataset_hashing as run; out = run("foo"); print(out)'
 04e0bb39f30b1a3feb89f536c93be15055482df748674b00d26e5a75777702e9
-$ python -c 'from utils import dataset_append as run; out = run("[1, 2, 3]", "[4, 5, 6]"); print(out)
+$ python -c 'from utils import dataset_append as run; out = run("[1, 2, 3]", "[4, 5, 6]"); print(out)'
 ('[1,2,3,4,5,6]', '3b27ea06e1a721ca6709a283026372e7ff388331242dac94548544b35c2db9b6')
 ````
 
