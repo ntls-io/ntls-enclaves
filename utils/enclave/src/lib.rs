@@ -1,6 +1,5 @@
 #![cfg_attr(not(target_env = "sgx"), no_std)]
-#![deny(unsafe_op_in_unsafe_fn)]
-
+#[allow(unused_unsafe)]
 use std::{eprintln, ptr, slice, vec::Vec};
 
 use sgx_tstd as std;
@@ -58,7 +57,7 @@ pub unsafe extern "C" fn dataset_append_ecall(
     let mut data = match data {
         Ok(value) => value,
         Err(why) => {
-            eprintln!("{why}");
+            eprintln!("{}", why);
             return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
@@ -68,7 +67,7 @@ pub unsafe extern "C" fn dataset_append_ecall(
     match new_data {
         Ok(value) => data.extend(value),
         Err(why) => {
-            eprintln!("{why}");
+            eprintln!("{}", why);
             return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
@@ -76,7 +75,7 @@ pub unsafe extern "C" fn dataset_append_ecall(
     let data = match serde_json::to_string(&data) {
         Ok(data) => data,
         Err(why) => {
-            eprintln!("{why}");
+            eprintln!("{}", why);
             return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };

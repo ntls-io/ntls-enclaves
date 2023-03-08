@@ -82,7 +82,7 @@ pub fn row_counter(content: &str) -> PyResult<u64> {
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
-            let message = format!("initialising enclave failed: {why}!");
+            let message = format!("initialising enclave failed: {}!", why);
             return Err(PyValueError::new_err(message));
         }
     };
@@ -99,7 +99,7 @@ pub fn row_counter(content: &str) -> PyResult<u64> {
     };
     enclave.destroy();
     if result != sgx_status_t::SGX_SUCCESS {
-        let message = format!("enclave ECALL failed: {result}!");
+        let message = format!("enclave ECALL failed: {}!", result);
         return Err(PyValueError::new_err(message));
     }
     Ok(count)
@@ -110,7 +110,7 @@ pub fn dataset_hashing(content: &str) -> PyResult<String> {
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
-            let message = format!("initialising enclave failed: {why}!");
+            let message = format!("initialising enclave failed: {}!", why);
             return Err(PyValueError::new_err(message));
         }
     };
@@ -128,7 +128,7 @@ pub fn dataset_hashing(content: &str) -> PyResult<String> {
     };
     enclave.destroy();
     if result != sgx_status_t::SGX_SUCCESS {
-        let message = format!("enclave ECALL failed: {result}!");
+        let message = format!("enclave ECALL failed: {}!", result);
         return Err(PyValueError::new_err(message));
     }
     let hash = String::from_utf8_lossy(hash);
@@ -140,7 +140,7 @@ pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<(String, 
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
-            let message = format!("initialising enclave failed: {why}!");
+            let message = format!("initialising enclave failed: {}!", why);
             return Err(PyValueError::new_err(message));
         }
     };
@@ -163,7 +163,7 @@ pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<(String, 
     };
     enclave.destroy();
     if result != sgx_status_t::SGX_SUCCESS {
-        let message = format!("enclave ECALL failed: {result}!");
+        let message = format!("enclave ECALL failed: {}!", result);
         return Err(PyValueError::new_err(message));
     }
     let complete_data = unsafe { slice::from_raw_parts(complete_data.as_ptr(), complete_data_len) };
@@ -179,7 +179,7 @@ pub fn transaction_sign(transaction: &str, account_seed: &str) -> PyResult<Vec<u
     let enclave = match init_enclave() {
         Ok(enclave) => enclave,
         Err(why) => {
-            let message = format!("initialising enclave failed: {why}!");
+            let message = format!("initialising enclave failed: {}!", why);
             return Err(PyValueError::new_err(message));
         }
     };
@@ -199,7 +199,7 @@ pub fn transaction_sign(transaction: &str, account_seed: &str) -> PyResult<Vec<u
     };
     enclave.destroy();
     if result != sgx_status_t::SGX_SUCCESS {
-        let message = format!("enclave ECALL failed: {result}!");
+        let message = format!("enclave ECALL failed: {}!", result);
         return Err(PyValueError::new_err(message));
     }
     let signed_transaction =
