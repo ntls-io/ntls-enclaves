@@ -12,7 +12,7 @@ For the Python part, we use [Poetry] for package management.
   then use `poetry` to install some needed packages:
 
   ```
-  cd $enclave/app
+  cd utils/app
   poetry install
   ```
 
