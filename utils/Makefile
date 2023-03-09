@@ -59,7 +59,6 @@ SGX_COMMON_CFLAGS += -fstack-protector
 
 CUSTOM_LIBRARY_PATH := ./build/lib
 CUSTOM_BIN_PATH := ./build/bin
-CUSTOM_EDL_PATH := ../../edl
 CUSTOM_COMMON_PATH := ../../common
 
 ######## EDL Settings ########
@@ -122,13 +121,13 @@ app/Enclave_u.o: $(Enclave_EDL_Files)
 	@echo "CC   <=  $<"
 
 $(App_Enclave_u_Object): app/Enclave_u.o
-	$(AR) rcsD $@ $^
+	$(AR) rcsD build/$@ $^
 
 $(App_Name): $(App_Enclave_u_Object) $(App_SRC_Files)
 	@cd app && SGX_SDK=$(SGX_SDK) cargo build $(App_Rust_Flags)
 	@echo "Cargo  =>  $@"
-	mkdir -p bin
-	cp $(App_Rust_Path)/app ./bin
+	mkdir -p build/lib
+	cp $(App_Rust_Path)/libutils.so ./build/lib
 
 ######## Enclave Objects ########
 
