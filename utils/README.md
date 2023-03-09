@@ -8,7 +8,7 @@ For the Python part, we use [Poetry] for package management.
   apt install python3-poetry
   ```
 
-- Proceed by navigating to a directory containing pyproject.toml,
+- Proceed by navigating to a directory containing "pyproject.toml",
   then use `poetry` to install some needed packages:
 
   ```
@@ -16,8 +16,13 @@ For the Python part, we use [Poetry] for package management.
   poetry install
   ```
 
-- Navigate back to the relevant enclave project directory,
-  and create a `.env` file indicating that this is just a simulation:
+- Open the Python environment by running `poetry shell`.
+  You will know this worked by seeing something similar to the following,
+  after running each shell command:
+
+  > (utils-py3.11)
+
+- Create a `.env` file indicating that this is just a simulation:
 
   ```
   cd ..
@@ -34,19 +39,13 @@ For the Python part, we use [Poetry] for package management.
 - Source the Intel SGX SDK env,
   created by following instructions from [this repo].
 
-- Navigate to `app/`,
-  then open the Python environment by running `poetry shell`.
-  You will know this worked by seeing something similar to the following,
-  after running each shell command:
-
-  > (utils-py3.11)
-
-
 # build
 
-- Do it so:
+- Navigate to the root of the project,
+  and build it so:
 
   ```
+  cd ..
   make
   ```
 
