@@ -37,16 +37,6 @@ extern "C" {
         complete_data_len: *mut usize,
         complete_data_hash: *mut u8,
     ) -> sgx_status_t;
-
-    fn transaction_sign_ecall(
-        eid: sgx_enclave_id_t,
-        retval: *mut sgx_status_t,
-        transaction: *const u8,
-        transaction_len: usize,
-        account_seed: *const u8,
-        signed_transaction: *mut u8,
-        signed_transaction_len: *mut usize,
-    ) -> sgx_status_t;
 }
 
 fn init_enclave() -> SgxResult<SgxEnclave> {
@@ -73,7 +63,6 @@ fn utils(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(row_counter, module)?)?;
     module.add_function(wrap_pyfunction!(dataset_hashing, module)?)?;
     module.add_function(wrap_pyfunction!(dataset_append, module)?)?;
-    module.add_function(wrap_pyfunction!(transaction_sign, module)?)?;
     Ok(())
 }
 
@@ -172,37 +161,4 @@ pub fn dataset_append(original_data: &str, new_data: &str) -> PyResult<(String, 
     let complete_data = String::from_utf8_lossy(complete_data);
     let complete_data_hash = String::from_utf8_lossy(complete_data_hash);
     Ok((complete_data.into(), complete_data_hash.into()))
-}
-
-#[pyfunction]
-pub fn transaction_sign(transaction: &str, account_seed: &str) -> PyResult<Vec<u8>> {
-    let enclave = match init_enclave() {
-        Ok(enclave) => enclave,
-        Err(why) => {
-            let message = format!("initialising enclave failed: {why}!");
-            return Err(PyValueError::new_err(message));
-        }
-    };
-    let mut retval = sgx_status_t::SGX_SUCCESS;
-    let mut signed_transaction = Vec::with_capacity(100); // TODO avoid magic number
-    let mut signed_transaction_len = 0;
-    let result = unsafe {
-        transaction_sign_ecall(
-            enclave.geteid(),
-            &mut retval,
-            transaction.as_ptr(),
-            transaction.len(),
-            account_seed.as_ptr(),
-            signed_transaction.as_mut_ptr(),
-            &mut signed_transaction_len,
-        )
-    };
-    enclave.destroy();
-    if result != sgx_status_t::SGX_SUCCESS {
-        let message = format!("enclave ECALL failed: {result}!");
-        return Err(PyValueError::new_err(message));
-    }
-    let signed_transaction =
-        unsafe { slice::from_raw_parts(signed_transaction.as_ptr(), signed_transaction_len) };
-    Ok(signed_transaction.into())
 }
